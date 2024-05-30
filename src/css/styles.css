@@ -1,80 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-  }
-  
-  .navbar {
-    background-color: #333;
-    color: white;
-    padding: 1rem;
-  }
-  
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
   
   .navbar-brand {
-    font-size: 1.5rem;
+    font-size: 1.5em;
   }
   
-  .navbar-nav {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .nav-item .nav-link {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .container {
-    padding: 2rem;
-  }
-  
-  .title {
-    text-align: center;
-  }
-  
-  .list-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .list-item {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .description-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .movie-image {
-    width: 50px;
-    height: 75px;
-    border-radius: 5px;
-  }
-  
-  .review-textarea {
-    flex-grow: 1;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 0.5rem;
+  .content-section {
+    margin-top: 20px;
   }
   
