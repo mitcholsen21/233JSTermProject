@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const moviesLink = document.getElementById('moviesLink');
     const tvShowsLink = document.getElementById('tvShowsLink');
@@ -6,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tvShowsList = document.getElementById('tvShowsList');
     const movieForm = document.getElementById('movieForm');
     const movieItems = document.getElementById('movieItems');
-    let movieCounter = 1;
+  
     moviesLink.addEventListener('click', () => {
       moviesList.classList.remove('d-none');
       tvShowsList.classList.add('d-none');
@@ -20,14 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
       tvShowsLink.classList.add('active');
       moviesLink.classList.remove('active');
     });
-  
+
+    // Counter for movie items
+    let movieCounter = 1;
+
     // Function to render a movie item
     const renderMovieItem = (title, review) => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item';
-        li.innerHTML = `<strong>#${movieCounter}</strong>: <strong>${title}</strong>: ${review}`;
-        movieItems.appendChild(li);
-        movieCounter++; // Increment the counter for the next movie
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.innerHTML = `<strong>#${movieCounter}</strong>: <strong>${title}</strong>: ${review}`;
+      movieItems.appendChild(li);
+      movieCounter++; // Increment the counter for the next movie
     };
   
     // Handle form submission
@@ -44,6 +46,5 @@ document.addEventListener('DOMContentLoaded', () => {
         movieForm.reset();
       }
     });
-  });
-  
-  
+
+});
