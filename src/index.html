@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body class="bg-dark text-light">
   <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #004080;">
     <a class="navbar-brand" href="#">My List</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -31,29 +31,87 @@
   <div class="container mt-4">
     <!-- Movie List Section -->
     <div id="moviesList" class="content-section">
-      <h2>My Favorite Movies</h2>
+      <h2>Your Movie List</h2>
       <form id="movieForm" class="mb-4">
-        <div class="form-group">
-          <label for="movieTitle">Movie Title</label>
-          <input type="text" class="form-control" id="movieTitle" required>
+        <ol id="movieItems" class="list-group mb-4">
+          <li class="list-group-item bg-secondary text-light">
+            <div class="form-row">
+              <div class="col">
+                <label for="movieTitle1">Movie Title</label>
+                <input type="text" class="form-control bg-dark text-light" id="movieTitle1" placeholder="Movie Title" required>
+              </div>
+              <div class="col">
+                <label for="movieReview1">Review</label>
+                <textarea class="form-control bg-dark text-light" id="movieReview1" rows="1" placeholder="Movie Review" required></textarea>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item bg-secondary text-light">
+            <div class="form-row">
+              <div class="col">
+                <label for="movieTitle2">Movie Title</label>
+                <input type="text" class="form-control bg-dark text-light" id="movieTitle2" placeholder="Movie Title" required>
+              </div>
+              <div class="col">
+                <label for="movieReview2">Review</label>
+                <textarea class="form-control bg-dark text-light" id="movieReview2" rows="1" placeholder="Movie Review" required></textarea>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item bg-secondary text-light">
+            <div class="form-row">
+              <div class="col">
+                <label for="movieTitle3">Movie Title</label>
+                <input type="text" class="form-control bg-dark text-light" id="movieTitle3" placeholder="Movie Title" required>
+              </div>
+              <div class="col">
+                <label for="movieReview3">Review</label>
+                <textarea class="form-control bg-dark text-light" id="movieReview3" rows="1" placeholder="Movie Review" required></textarea>
+              </div>
+            </div>
+          </li>
+        </ol>
+        <div class="form-row">
+          <div class="col">
+            <label for="movieTitle">New Movie Title</label>
+            <input type="text" class="form-control bg-dark text-light" id="movieTitle" required>
+          </div>
+          <div class="col">
+            <label for="movieReview">New Movie Review</label>
+            <textarea class="form-control bg-dark text-light" id="movieReview" rows="1" required></textarea>
+          </div>
+          <div class="col">
+            <label for="movieImage">Image URL</label>
+            <input type="url" class="form-control bg-dark text-light" id="movieImage" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="movieReview">Review</label>
-          <textarea class="form-control" id="movieReview" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Movie</button>
+        <button type="submit" class="btn btn-primary mt-3">Add Movie</button>
       </form>
-      <ol id="movieItems" class="list-group">
-        <!-- Movie items will be added here dynamically -->
-      </ol>
     </div>
 
     <!-- TV Show List Section -->
     <div id="tvShowsList" class="content-section d-none">
       <h2>My Favorite TV Shows</h2>
-      <ul id="tvShowItems" class="list-group">
+      <form id="tvShowForm" class="mb-4">
+        <div class="form-row">
+          <div class="col">
+            <label for="tvShowTitle">TV Show Title</label>
+            <input type="text" class="form-control bg-dark text-light" id="tvShowTitle" required>
+          </div>
+          <div class="col">
+            <label for="tvShowReview">Review</label>
+            <textarea class="form-control bg-dark text-light" id="tvShowReview" rows="1" required></textarea>
+          </div>
+          <div class="col">
+            <label for="tvShowImage">Image URL</label>
+            <input type="url" class="form-control bg-dark text-light" id="tvShowImage" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Add TV Show</button>
+      </form>
+      <ol id="tvShowItems" class="list-group">
         <!-- TV Show items will be added here dynamically -->
-      </ul>
+      </ol>
     </div>
   </div>
 

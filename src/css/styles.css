@@ -1,12 +1,40 @@
 body {
-    font-family: Arial, sans-serif;
-  }
-  
-  .navbar-brand {
-    font-size: 1.5em;
-  }
-  
-  .content-section {
-    margin-top: 20px;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #f8f9fa;
+}
+
+.navbar-brand {
+  font-size: 1.5em;
+}
+
+.content-section {
+  margin-top: 20px;
+}
+
+.list-group-item {
+  background-color: #343a40;
+  color: #f8f9fa;
+}
+
+.list-group-item .form-row {
+  width: 100%;
+}
+
+.list-group-item .description-btn {
+  margin-left: 10px;
+}
+
+.list-group-item .description {
+  margin-top: 10px;
+  font-style: italic;
+  display: none;
+}
+
+.hidden-description {
+  display: block !important;
+}
+
+.img-thumbnail {
+  max-width: 100px;
+}
