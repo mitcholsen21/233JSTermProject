@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Counter for movie items
-  let movieCounter = 4;
+  let movieCounter = 1;
 
   // Function to render a movie item
   const renderMovieItem = (title, review, image) => {
@@ -61,6 +61,29 @@ document.addEventListener('DOMContentLoaded', () => {
     movieCounter++; // Increment the counter for the next movie
   };
 
+  // Save movies to localStorage
+  const saveMovies = () => {
+    const movies = [];
+    movieItems.querySelectorAll('li').forEach((li, index) => {
+      const title = li.querySelector('div strong').textContent.split(': ')[1];
+      const review = li.querySelector('.description').textContent;
+      const image = li.querySelector('img').src;
+      movies.push({ title, review, image });
+    });
+    localStorage.setItem('movies', JSON.stringify(movies));
+  };
+
+  // Load movies from localStorage
+  const loadMovies = () => {
+    const movies = JSON.parse(localStorage.getItem('movies'));
+    if (movies) {
+      movies.forEach((movie, index) => {
+        movieCounter = index + 1;
+        renderMovieItem(movie.title, movie.review, movie.image);
+      });
+    }
+  };
+
   // Handle form submission
   movieForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -71,9 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (movieTitle && movieReview && movieImage) {
       renderMovieItem(movieTitle, movieReview, movieImage);
-
-      // Clear form fields
+      saveMovies(); // Save movies to localStorage
       movieForm.reset();
     }
   });
+
+  // Load movies on page load
+  loadMovies();
 });
