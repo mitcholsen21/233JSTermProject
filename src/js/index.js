@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const tvShowsList = document.getElementById('tvShowsList');
   const movieForm = document.getElementById('movieForm');
   const movieItems = document.getElementById('movieItems');
+  const searchMovieButton = document.getElementById('searchMovieButton');
+  const movieSearchTitle = document.getElementById('movieSearchTitle');
+  const movieReview = document.getElementById('movieReview');
+  const movieImage = document.getElementById('movieImage');
+  
+  const OMDB_API_KEY = 'a08e8955';
 
   moviesLink.addEventListener('click', () => {
     moviesList.classList.remove('d-none');
@@ -84,16 +90,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // Fetch movie details from OMDB
+  const fetchMovieDetails = (title) => {
+    const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${OMDB_API_KEY}`;
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.Response === 'True') {
+          return data;
+        } else {
+          throw new Error(data.Error);
+        }
+      });
+  };
+
+  // Handle movie search
+  searchMovieButton.addEventListener('click', () => {
+    const title = movieSearchTitle.value;
+    if (title) {
+      fetchMovieDetails(title)
+        .then(data => {
+          movieSearchTitle.value = data.Title;
+          movieReview.value = data.Plot;
+          movieImage.value = data.Poster;
+        })
+        .catch(error => {
+          alert(`Error: ${error.message}`);
+        });
+    }
+  });
+
   // Handle form submission
   movieForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const movieTitle = document.getElementById('movieTitle').value;
-    const movieReview = document.getElementById('movieReview').value;
-    const movieImage = document.getElementById('movieImage').value;
+    const movieTitle = movieSearchTitle.value;
+    const movieReviewText = movieReview.value;
+    const movieImageUrl = movieImage.value;
 
-    if (movieTitle && movieReview && movieImage) {
-      renderMovieItem(movieTitle, movieReview, movieImage);
+    if (movieTitle && movieReviewText && movieImageUrl) {
+      renderMovieItem(movieTitle, movieReviewText, movieImageUrl);
       saveMovies(); // Save movies to localStorage
       movieForm.reset();
     }

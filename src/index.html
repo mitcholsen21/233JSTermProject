@@ -73,8 +73,13 @@
         </ol>
         <div class="form-row">
           <div class="col">
-            <label for="movieTitle">New Movie Title</label>
-            <input type="text" class="form-control bg-dark text-light" id="movieTitle" required>
+            <label for="movieSearchTitle">New Movie Title</label>
+            <div class="input-group">
+              <input type="text" class="form-control bg-dark text-light" id="movieSearchTitle" required>
+              <div class="input-group-append">
+                <button type="button" class="btn btn-info" id="searchMovieButton">Search</button>
+              </div>
+            </div>
           </div>
           <div class="col">
             <label for="movieReview">New Movie Review</label>
