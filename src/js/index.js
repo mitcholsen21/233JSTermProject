@@ -65,21 +65,43 @@ document.addEventListener('DOMContentLoaded', () => {
       img.src = image;
       img.alt = `${title} Cover`;
       img.className = 'img-thumbnail mr-3';
+      img.style.width = '300px';
 
       const div = document.createElement('div');
       div.innerHTML = `<strong>#${this.movieCounter}</strong>: <strong>${title}</strong><br>${review}`;
-
+      div.style.fontSize = '1.5em';
+      
       const deleteButton = document.createElement('button');
-      deleteButton.className = 'btn btn-danger btn-sm ml-3';
+      deleteButton.className = 'btn btn-danger btn-lg ml-3';
       deleteButton.innerText = 'Delete';
       deleteButton.addEventListener('click', () => {
         this.movieItems.removeChild(li);
         this.saveMovies();
       });
 
+      const editButton = document.createElement('button');
+      editButton.className = 'btn btn-warning btn-lg ml-3';
+      editButton.innerText = 'Edit';
+      editButton.addEventListener('click', () => {
+        if (editButton.innerText === 'Edit') {
+          const reviewTextArea = document.createElement('textarea');
+          reviewTextArea.className = 'form-control bg-dark text-light';
+          reviewTextArea.value = review;
+          div.innerHTML = `<strong>#${this.movieCounter}</strong>: <strong>${title}</strong><br>`;
+          div.appendChild(reviewTextArea);
+          editButton.innerText = 'Submit';
+        } else {
+          review = div.querySelector('textarea').value;
+          div.innerHTML = `<strong>#${this.movieCounter}</strong>: <strong>${title}</strong><br>${review}`;
+          editButton.innerText = 'Edit';
+          this.saveMovies();
+        }
+      });
+
       li.appendChild(img);
       li.appendChild(div);
       li.appendChild(deleteButton);
+      li.appendChild(editButton);
       this.movieItems.appendChild(li);
 
       this.movieCounter++;
@@ -96,18 +118,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const div = document.createElement('div');
       div.innerHTML = `<strong>#${this.tvShowCounter}</strong>: <strong>${title}</strong><br>${review}`;
-
+      div.style.fontSize = '1.5em';
+      
       const deleteButton = document.createElement('button');
-      deleteButton.className = 'btn btn-danger btn-sm ml-3';
+      deleteButton.className = 'btn btn-danger btn-lg ml-3';
       deleteButton.innerText = 'Delete';
       deleteButton.addEventListener('click', () => {
         this.tvShowItems.removeChild(li);
         this.saveTVShows();
       });
 
+      const editButton = document.createElement('button');
+      editButton.className = 'btn btn-warning btn-lg ml-3';
+      editButton.innerText = 'Edit';
+      editButton.addEventListener('click', () => {
+        if (editButton.innerText === 'Edit') {
+          const reviewTextArea = document.createElement('textarea');
+          reviewTextArea.className = 'form-control bg-dark text-light';
+          reviewTextArea.value = review;
+          div.innerHTML = `<strong>#${this.tvShowCounter}</strong>: <strong>${title}</strong><br>`;
+          div.appendChild(reviewTextArea);
+          editButton.innerText = 'Submit';
+        } else {
+          review = div.querySelector('textarea').value;
+          div.innerHTML = `<strong>#${this.tvShowCounter}</strong>: <strong>${title}</strong><br>${review}`;
+          editButton.innerText = 'Edit';
+          this.saveTVShows();
+        }
+      });
+
       li.appendChild(img);
       li.appendChild(div);
       li.appendChild(deleteButton);
+      li.appendChild(editButton);
       this.tvShowItems.appendChild(li);
 
       this.tvShowCounter++;
