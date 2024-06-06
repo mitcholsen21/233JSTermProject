@@ -17,6 +17,10 @@ body {
   color: #f8f9fa;
 }
 
+.list-group-item div {
+  font-size: 10.0em;
+}
+
 .list-group-item .form-row {
   width: 100%;
 }

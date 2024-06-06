@@ -32,6 +32,7 @@ module.exports = {
     },
     target: 'web',
     devServer: { 
+      contentBase: path.resolve(__dirname, 'dist'),
       static: "./dist"
     }, 
     /* no separate source map files in production */

@@ -1,29 +1,46 @@
 document.addEventListener('DOMContentLoaded', () => {
-  class MovieApp {
+  class MediaApp {
     constructor() {
+      // Common elements
       this.moviesLink = document.getElementById('moviesLink');
       this.tvShowsLink = document.getElementById('tvShowsLink');
       this.moviesList = document.getElementById('moviesList');
       this.tvShowsList = document.getElementById('tvShowsList');
+      
+      // Movie elements
       this.movieForm = document.getElementById('movieForm');
       this.movieItems = document.getElementById('movieItems');
       this.searchMovieButton = document.getElementById('searchMovieButton');
       this.movieSearchTitle = document.getElementById('movieSearchTitle');
       this.movieReview = document.getElementById('movieReview');
       this.movieImage = document.getElementById('movieImage');
+
+      // TV show elements
+      this.tvShowForm = document.getElementById('tvShowForm');
+      this.tvShowItems = document.getElementById('tvShowItems');
+      this.searchTVShowButton = document.getElementById('searchTVShowButton');
+      this.tvShowSearchTitle = document.getElementById('tvShowSearchTitle');
+      this.tvShowReview = document.getElementById('tvShowReview');
+      this.tvShowImage = document.getElementById('tvShowImage');
+      
       this.OMDB_API_KEY = 'a08e8955';
 
+      // Counters
       this.movieCounter = 1;
+      this.tvShowCounter = 1;
 
       this.bindEvents();
       this.loadMovies();
+      this.loadTVShows();
     }
 
     bindEvents() {
       this.moviesLink.addEventListener('click', this.showMoviesList.bind(this));
       this.tvShowsLink.addEventListener('click', this.showTvShowsList.bind(this));
       this.searchMovieButton.addEventListener('click', this.handleMovieSearch.bind(this));
-      this.movieForm.addEventListener('submit', this.handleFormSubmission.bind(this));
+      this.movieForm.addEventListener('submit', this.handleMovieFormSubmission.bind(this));
+      this.searchTVShowButton.addEventListener('click', this.handleTVShowSearch.bind(this));
+      this.tvShowForm.addEventListener('submit', this.handleTVShowFormSubmission.bind(this));
     }
 
     showMoviesList() {
@@ -42,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderMovieItem(title, review, image) {
       const li = document.createElement('li');
-      li.className = 'list-group-item bg-secondary text-light';
+      li.className = 'list-group-item bg-secondary text-light d-flex justify-content-between align-items-center';
 
       const img = document.createElement('img');
       img.src = image;
@@ -50,34 +67,57 @@ document.addEventListener('DOMContentLoaded', () => {
       img.className = 'img-thumbnail mr-3';
 
       const div = document.createElement('div');
-      div.innerHTML = `<strong>#${this.movieCounter}</strong>: <strong>${title}</strong>`;
+      div.innerHTML = `<strong>#${this.movieCounter}</strong>: <strong>${title}</strong><br>${review}`;
 
-      const descButton = document.createElement('button');
-      descButton.className = 'btn btn-info description-btn ml-3';
-      descButton.innerText = 'Description';
-      descButton.addEventListener('click', () => {
-        const description = li.querySelector('.description');
-        description.classList.toggle('hidden-description');
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'btn btn-danger btn-sm ml-3';
+      deleteButton.innerText = 'Delete';
+      deleteButton.addEventListener('click', () => {
+        this.movieItems.removeChild(li);
+        this.saveMovies();
       });
-
-      const description = document.createElement('div');
-      description.className = 'description hidden-description mt-2';
-      description.innerText = review;
 
       li.appendChild(img);
       li.appendChild(div);
-      li.appendChild(descButton);
-      li.appendChild(description);
+      li.appendChild(deleteButton);
       this.movieItems.appendChild(li);
 
       this.movieCounter++;
+    }
+
+    renderTVShowItem(title, review, image) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item bg-secondary text-light d-flex justify-content-between align-items-center';
+
+      const img = document.createElement('img');
+      img.src = image;
+      img.alt = `${title} Cover`;
+      img.className = 'img-thumbnail mr-3';
+
+      const div = document.createElement('div');
+      div.innerHTML = `<strong>#${this.tvShowCounter}</strong>: <strong>${title}</strong><br>${review}`;
+
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'btn btn-danger btn-sm ml-3';
+      deleteButton.innerText = 'Delete';
+      deleteButton.addEventListener('click', () => {
+        this.tvShowItems.removeChild(li);
+        this.saveTVShows();
+      });
+
+      li.appendChild(img);
+      li.appendChild(div);
+      li.appendChild(deleteButton);
+      this.tvShowItems.appendChild(li);
+
+      this.tvShowCounter++;
     }
 
     saveMovies() {
       const movies = [];
       this.movieItems.querySelectorAll('li').forEach((li) => {
         const title = li.querySelector('div strong').textContent.split(': ')[1];
-        const review = li.querySelector('.description').textContent;
+        const review = li.querySelector('div').innerHTML.split('<br>')[1];
         const image = li.querySelector('img').src;
         movies.push({ title, review, image });
       });
@@ -94,8 +134,29 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    fetchMovieDetails(title) {
-      const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${this.OMDB_API_KEY}`;
+    saveTVShows() {
+      const tvShows = [];
+      this.tvShowItems.querySelectorAll('li').forEach((li) => {
+        const title = li.querySelector('div strong').textContent.split(': ')[1];
+        const review = li.querySelector('div').innerHTML.split('<br>')[1];
+        const image = li.querySelector('img').src;
+        tvShows.push({ title, review, image });
+      });
+      localStorage.setItem('tvShows', JSON.stringify(tvShows));
+    }
+
+    loadTVShows() {
+      const tvShows = JSON.parse(localStorage.getItem('tvShows')) || [];
+      if (tvShows.length > 0) {
+        tvShows.forEach((tvShow, index) => {
+          this.tvShowCounter = index + 1;
+          this.renderTVShowItem(tvShow.title, tvShow.review, tvShow.image);
+        });
+      }
+    }
+
+    fetchDetails(title, type) {
+      const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&type=${type}&apikey=${this.OMDB_API_KEY}`;
       return fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -110,10 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
     handleMovieSearch() {
       const title = this.movieSearchTitle.value;
       if (title) {
-        this.fetchMovieDetails(title)
+        this.fetchDetails(title, 'movie')
           .then(data => {
             this.movieSearchTitle.value = data.Title;
-            this.movieReview.value = data.Plot;
             this.movieImage.value = data.Poster;
           })
           .catch(error => {
@@ -122,7 +182,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    handleFormSubmission(event) {
+    handleTVShowSearch() {
+      const title = this.tvShowSearchTitle.value;
+      if (title) {
+        this.fetchDetails(title, 'series')
+          .then(data => {
+            this.tvShowSearchTitle.value = data.Title;
+            this.tvShowImage.value = data.Poster;
+          })
+          .catch(error => {
+            alert(`Error: ${error.message}`);
+          });
+      }
+    }
+
+    handleMovieFormSubmission(event) {
       event.preventDefault();
 
       const movieTitle = this.movieSearchTitle.value;
@@ -135,7 +209,21 @@ document.addEventListener('DOMContentLoaded', () => {
         this.movieForm.reset();
       }
     }
+
+    handleTVShowFormSubmission(event) {
+      event.preventDefault();
+
+      const tvShowTitle = this.tvShowSearchTitle.value;
+      const tvShowReviewText = this.tvShowReview.value;
+      const tvShowImageUrl = this.tvShowImage.value;
+
+      if (tvShowTitle && tvShowReviewText && tvShowImageUrl) {
+        this.renderTVShowItem(tvShowTitle, tvShowReviewText, tvShowImageUrl);
+        this.saveTVShows();
+        this.tvShowForm.reset();
+      }
+    }
   }
 
-  new MovieApp();
+  new MediaApp();
 });

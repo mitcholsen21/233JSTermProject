@@ -35,7 +35,7 @@
       <form id="movieForm" class="mb-4">
         <div class="form-row">
           <div class="col">
-            <label for="movieSearchTitle">New Movie Title</label>
+            <label for="movieSearchTitle">Movie Title</label>
             <div class="input-group">
               <input type="text" class="form-control bg-dark text-light" id="movieSearchTitle" required>
               <div class="input-group-append">
@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="col">
-            <label for="movieReview">New Movie Review</label>
+            <label for="movieReview">Movie Review</label>
             <textarea class="form-control bg-dark text-light" id="movieReview" rows="1" required></textarea>
           </div>
           <div class="col">
@@ -65,8 +65,13 @@
       <form id="tvShowForm" class="mb-4">
         <div class="form-row">
           <div class="col">
-            <label for="tvShowTitle">TV Show Title</label>
-            <input type="text" class="form-control bg-dark text-light" id="tvShowTitle" required>
+            <label for="tvShowSearchTitle">TV Show Title</label>
+            <div class="input-group">
+              <input type="text" class="form-control bg-dark text-light" id="tvShowSearchTitle" required>
+              <div class="input-group-append">
+                <button type="button" class="btn btn-info" id="searchTVShowButton">Search</button>
+              </div>
+            </div>
           </div>
           <div class="col">
             <label for="tvShowReview">Review</label>
