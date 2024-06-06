@@ -32,8 +32,11 @@ module.exports = {
     },
     target: 'web',
     devServer: { 
-      contentBase: path.resolve(__dirname, 'dist'),
-      static: "./dist"
+      static:  {
+        directory: path.resolve(__dirname, 'dist'),
+      },
+      compress: true,
+      port: 8080,
     }, 
     /* no separate source map files in production */
     devtool: !isProduction ? 'source-map' : 'inline-source-map', 

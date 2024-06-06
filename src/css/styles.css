@@ -13,13 +13,11 @@ body {
 }
 
 .list-group-item {
-  background-color: #343a40;
-  color: #f8f9fa;
+  background-color: #293036;
+  color: #a0b7cd;
 }
 
-.list-group-item div {
-  font-size: 10.0em;
-}
+
 
 .list-group-item .form-row {
   width: 100%;
