@@ -1,140 +1,141 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const moviesLink = document.getElementById('moviesLink');
-  const tvShowsLink = document.getElementById('tvShowsLink');
-  const moviesList = document.getElementById('moviesList');
-  const tvShowsList = document.getElementById('tvShowsList');
-  const movieForm = document.getElementById('movieForm');
-  const movieItems = document.getElementById('movieItems');
-  const searchMovieButton = document.getElementById('searchMovieButton');
-  const movieSearchTitle = document.getElementById('movieSearchTitle');
-  const movieReview = document.getElementById('movieReview');
-  const movieImage = document.getElementById('movieImage');
-  
-  const OMDB_API_KEY = 'a08e8955';
+  class MovieApp {
+    constructor() {
+      this.moviesLink = document.getElementById('moviesLink');
+      this.tvShowsLink = document.getElementById('tvShowsLink');
+      this.moviesList = document.getElementById('moviesList');
+      this.tvShowsList = document.getElementById('tvShowsList');
+      this.movieForm = document.getElementById('movieForm');
+      this.movieItems = document.getElementById('movieItems');
+      this.searchMovieButton = document.getElementById('searchMovieButton');
+      this.movieSearchTitle = document.getElementById('movieSearchTitle');
+      this.movieReview = document.getElementById('movieReview');
+      this.movieImage = document.getElementById('movieImage');
+      this.OMDB_API_KEY = 'a08e8955';
 
-  moviesLink.addEventListener('click', () => {
-    moviesList.classList.remove('d-none');
-    tvShowsList.classList.add('d-none');
-    moviesLink.classList.add('active');
-    tvShowsLink.classList.remove('active');
-  });
+      this.movieCounter = 1;
 
-  tvShowsLink.addEventListener('click', () => {
-    tvShowsList.classList.remove('d-none');
-    moviesList.classList.add('d-none');
-    tvShowsLink.classList.add('active');
-    moviesLink.classList.remove('active');
-  });
-
-  // Counter for movie items
-  let movieCounter = 1;
-
-  // Function to render a movie item
-  const renderMovieItem = (title, review, image) => {
-    const li = document.createElement('li');
-    li.className = 'list-group-item bg-secondary text-light';
-
-    const img = document.createElement('img');
-    img.src = image;
-    img.alt = `${title} Cover`;
-    img.className = 'img-thumbnail mr-3';
-
-    const div = document.createElement('div');
-    div.innerHTML = `<strong>#${movieCounter}</strong>: <strong>${title}</strong>`;
-
-    const descButton = document.createElement('button');
-    descButton.className = 'btn btn-info description-btn ml-3';
-    descButton.innerText = 'Description';
-    descButton.addEventListener('click', () => {
-      const description = li.querySelector('.description');
-      if (description.classList.contains('hidden-description')) {
-        description.classList.remove('hidden-description');
-      } else {
-        description.classList.add('hidden-description');
-      }
-    });
-
-    const description = document.createElement('div');
-    description.className = 'description hidden-description mt-2';
-    description.innerText = review;
-
-    li.appendChild(img);
-    li.appendChild(div);
-    li.appendChild(descButton);
-    li.appendChild(description);
-    movieItems.appendChild(li);
-
-    movieCounter++; // Increment the counter for the next movie
-  };
-
-  // Save movies to localStorage
-  const saveMovies = () => {
-    const movies = [];
-    movieItems.querySelectorAll('li').forEach((li, index) => {
-      const title = li.querySelector('div strong').textContent.split(': ')[1];
-      const review = li.querySelector('.description').textContent;
-      const image = li.querySelector('img').src;
-      movies.push({ title, review, image });
-    });
-    localStorage.setItem('movies', JSON.stringify(movies));
-  };
-
-  // Load movies from localStorage
-  const loadMovies = () => {
-    const movies = JSON.parse(localStorage.getItem('movies'));
-    if (movies) {
-      movies.forEach((movie, index) => {
-        movieCounter = index + 1;
-        renderMovieItem(movie.title, movie.review, movie.image);
-      });
+      this.bindEvents();
+      this.loadMovies();
     }
-  };
 
-  // Fetch movie details from OMDB
-  const fetchMovieDetails = (title) => {
-    const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${OMDB_API_KEY}`;
-    return fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.Response === 'True') {
-          return data;
-        } else {
-          throw new Error(data.Error);
-        }
+    bindEvents() {
+      this.moviesLink.addEventListener('click', this.showMoviesList.bind(this));
+      this.tvShowsLink.addEventListener('click', this.showTvShowsList.bind(this));
+      this.searchMovieButton.addEventListener('click', this.handleMovieSearch.bind(this));
+      this.movieForm.addEventListener('submit', this.handleFormSubmission.bind(this));
+    }
+
+    showMoviesList() {
+      this.moviesList.classList.remove('d-none');
+      this.tvShowsList.classList.add('d-none');
+      this.moviesLink.classList.add('active');
+      this.tvShowsLink.classList.remove('active');
+    }
+
+    showTvShowsList() {
+      this.tvShowsList.classList.remove('d-none');
+      this.moviesList.classList.add('d-none');
+      this.tvShowsLink.classList.add('active');
+      this.moviesLink.classList.remove('active');
+    }
+
+    renderMovieItem(title, review, image) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item bg-secondary text-light';
+
+      const img = document.createElement('img');
+      img.src = image;
+      img.alt = `${title} Cover`;
+      img.className = 'img-thumbnail mr-3';
+
+      const div = document.createElement('div');
+      div.innerHTML = `<strong>#${this.movieCounter}</strong>: <strong>${title}</strong>`;
+
+      const descButton = document.createElement('button');
+      descButton.className = 'btn btn-info description-btn ml-3';
+      descButton.innerText = 'Description';
+      descButton.addEventListener('click', () => {
+        const description = li.querySelector('.description');
+        description.classList.toggle('hidden-description');
       });
-  };
 
-  // Handle movie search
-  searchMovieButton.addEventListener('click', () => {
-    const title = movieSearchTitle.value;
-    if (title) {
-      fetchMovieDetails(title)
+      const description = document.createElement('div');
+      description.className = 'description hidden-description mt-2';
+      description.innerText = review;
+
+      li.appendChild(img);
+      li.appendChild(div);
+      li.appendChild(descButton);
+      li.appendChild(description);
+      this.movieItems.appendChild(li);
+
+      this.movieCounter++;
+    }
+
+    saveMovies() {
+      const movies = [];
+      this.movieItems.querySelectorAll('li').forEach((li) => {
+        const title = li.querySelector('div strong').textContent.split(': ')[1];
+        const review = li.querySelector('.description').textContent;
+        const image = li.querySelector('img').src;
+        movies.push({ title, review, image });
+      });
+      localStorage.setItem('movies', JSON.stringify(movies));
+    }
+
+    loadMovies() {
+      const movies = JSON.parse(localStorage.getItem('movies')) || [];
+      if (movies.length > 0) {
+        movies.forEach((movie, index) => {
+          this.movieCounter = index + 1;
+          this.renderMovieItem(movie.title, movie.review, movie.image);
+        });
+      }
+    }
+
+    fetchMovieDetails(title) {
+      const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${this.OMDB_API_KEY}`;
+      return fetch(url)
+        .then(response => response.json())
         .then(data => {
-          movieSearchTitle.value = data.Title;
-          movieReview.value = data.Plot;
-          movieImage.value = data.Poster;
-        })
-        .catch(error => {
-          alert(`Error: ${error.message}`);
+          if (data.Response === 'True') {
+            return data;
+          } else {
+            throw new Error(data.Error);
+          }
         });
     }
-  });
 
-  // Handle form submission
-  movieForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const movieTitle = movieSearchTitle.value;
-    const movieReviewText = movieReview.value;
-    const movieImageUrl = movieImage.value;
-
-    if (movieTitle && movieReviewText && movieImageUrl) {
-      renderMovieItem(movieTitle, movieReviewText, movieImageUrl);
-      saveMovies(); // Save movies to localStorage
-      movieForm.reset();
+    handleMovieSearch() {
+      const title = this.movieSearchTitle.value;
+      if (title) {
+        this.fetchMovieDetails(title)
+          .then(data => {
+            this.movieSearchTitle.value = data.Title;
+            this.movieReview.value = data.Plot;
+            this.movieImage.value = data.Poster;
+          })
+          .catch(error => {
+            alert(`Error: ${error.message}`);
+          });
+      }
     }
-  });
 
-  // Load movies on page load
-  loadMovies();
+    handleFormSubmission(event) {
+      event.preventDefault();
+
+      const movieTitle = this.movieSearchTitle.value;
+      const movieReviewText = this.movieReview.value;
+      const movieImageUrl = this.movieImage.value;
+
+      if (movieTitle && movieReviewText && movieImageUrl) {
+        this.renderMovieItem(movieTitle, movieReviewText, movieImageUrl);
+        this.saveMovies();
+        this.movieForm.reset();
+      }
+    }
+  }
+
+  new MovieApp();
 });

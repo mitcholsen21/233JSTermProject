@@ -33,44 +33,6 @@
     <div id="moviesList" class="content-section">
       <h2>Your Movie List</h2>
       <form id="movieForm" class="mb-4">
-        <ol id="movieItems" class="list-group mb-4">
-          <li class="list-group-item bg-secondary text-light">
-            <div class="form-row">
-              <div class="col">
-                <label for="movieTitle1">#1</label>
-                <input type="text" class="form-control bg-dark text-light" id="movieTitle1" placeholder="Movie Title" required>
-              </div>
-              <div class="col">
-                <label for="movieReview1">Review</label>
-                <textarea class="form-control bg-dark text-light" id="movieReview1" rows="1" placeholder="Movie Review" required></textarea>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item bg-secondary text-light">
-            <div class="form-row">
-              <div class="col">
-                <label for="movieTitle2">#2</label>
-                <input type="text" class="form-control bg-dark text-light" id="movieTitle2" placeholder="Movie Title" required>
-              </div>
-              <div class="col">
-                <label for="movieReview2">Review</label>
-                <textarea class="form-control bg-dark text-light" id="movieReview2" rows="1" placeholder="Movie Review" required></textarea>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item bg-secondary text-light">
-            <div class="form-row">
-              <div class="col">
-                <label for="movieTitle3">#3</label>
-                <input type="text" class="form-control bg-dark text-light" id="movieTitle3" placeholder="Movie Title" required>
-              </div>
-              <div class="col">
-                <label for="movieReview3">Review</label>
-                <textarea class="form-control bg-dark text-light" id="movieReview3" rows="1" placeholder="Movie Review" required></textarea>
-              </div>
-            </div>
-          </li>
-        </ol>
         <div class="form-row">
           <div class="col">
             <label for="movieSearchTitle">New Movie Title</label>
@@ -92,6 +54,9 @@
         </div>
         <button type="submit" class="btn btn-primary mt-3">Add Movie</button>
       </form>
+      <ol id="movieItems" class="list-group mb-4">
+        <!-- Movie items will be added here dynamically -->
+      </ol>
     </div>
 
     <!-- TV Show List Section -->
